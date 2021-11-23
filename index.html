@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <form>
+    <form action="/" method="post">
         <fieldset>
             <legend>חנות פרחים</legend>
             <div>
@@ -53,13 +53,17 @@
                     צבע
                 </label>
             </div>
-            <div> 
+            <div>
                 <input list='colors' type='text'>
                 <datalist id='colors'>
                     <option value='אדום'></option>
                     <option value='כחול'></option>
                     <option value='לבן'></option>
                 </datalist>
+            </div>
+            <div><br/></div>
+            <div>
+                <input type="submit" value="שלח בקשה">
             </div>
         </fieldset>
     </form>
