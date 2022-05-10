@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        a {
+            font-size:large;
+        }
+    </style>
+</head>
+<body>
+     <form class="form-fields">
+        <section>
+            <fieldset>
+                <legend><h1>חנות פרחים</h1></legend>
+                <div>
+                    <label for="flowers-list-input">
+                        שם של הפרח
+                    </label>
+                </div>
+                <div class="form-fields">
+                    <input id="flowers-list-input" list='flowers-list' type='text'>
+                    <datalist id='flowers-list'>
+                        <option value='אגפנטוס'></option>
+                        <option value='אגרטום'></option>
+                        <option value='אדמונית קוראל סנסט'></option>
+                        <option value='אדמונית אדומה'></option>
+                        <option value='אדמונית פסטיבה מקסימה'></option>
+                    </datalist>
+                </div>
+                <br/>
+                <br/>
+                <br/>
+                <div>
+                    <label for="number">
+                        כמות
+                    </label>
+                </div>
+                <div class="form-fields">
+                    <input id="number" type='number'/>
+                </div>
+                <br/>
+                <br/>
+                <div>
+                    <label for="text">
+                        כתובת למשלוח
+                    </label>
+                </div>
+                <div class="form-fields">
+                    <input id="text" type="text"/>
+                </div>
+                <br/>
+                <br/>
+                <div>
+                    <label for="color">
+                        צבע
+                    </label>
+                </div>
+                <div class="form-fields">
+                    <input id="color" list='colors' type='text'>
+                    <datalist id='colors'>
+                        <option value='אדום'></option>
+                        <option value='כחול'></option>
+                        <option value='לבן'></option>
+                    </datalist>
+                </div>
+                <br/>
+                <section class="form-fields">
+                    <input type="submit" value="שלח בקשה" onclick="sendRequest()">
+                </section>
+            </fieldset>
+        </section>
+    </form>
+    <h1> קטלוג הפרחים  </h1>
+    <ol>
+        <li>
+             <a href="/Agapanthus">אגפנטוס</a>
+        </li>
+        <li>
+            <a href="/Ageratum" >אגרטום</a>
+        </li>
+        <li>
+             <a href="/PaeoniaCoralSunset">אדמונית קוראל סנסט</a>
+        </li>
+        <li>
+            <a href="/Peony">אדמונית אדומה</a>
+        </li>
+        <li>
+            <a href="/Paeonia">אדמונית פסטיבה מקסימה</a>
+        </li>
+     </ol>
+     <script>
+        async function sendRequest(){
+            let flowerName = document.getElementById('flower-list-input').value
+            let amount = document.getElementById('number').value
+            let address = document.getElementById('text').value
+            let color = document.getElementById('color').value
+            let response = await fetch('/order/' + flowerName + '/' + amount + '/'
+            + address + '/' + color)
+            let resJson = await response.json()
+        }
+     </script>
+</body>
+</html>

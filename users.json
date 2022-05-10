@@ -1,0 +1,26 @@
+{
+    "Yossi" : {
+        "rule" : "admin",
+        "password" : "admin1234"
+    },
+    "Motti" : {
+        "rule" : "employee",
+        "password" : "mottiZin12345"
+    },
+    "Devin" : {
+        "rule" : "employee",
+        "password" : "devinBooker9"
+    },
+    "Kobe" : {
+        "rule" : "customer",
+        "password" : "9i0i9878"
+    },
+    "Lebron" : {
+        "rule" : "customer",
+        "password" : "LebJaesP09"
+    },
+    "Paul" : {
+        "rule" : "Vendor",
+        "password" : "91u912u19"
+    }
+}
