@@ -41,6 +41,46 @@ router.get('/login/:user/:password', (req,res) => {
   res.status(404);
 })
 
+
+router.get('/users/:username/:password', (req,res) => {
+  let isNotUser = true
+  let temp = {}
+  let password = req.params.password;
+  let username = req.params.username;
+ 
+  for (let key in users)
+  {
+    temp = users[key]
+    if (key == username && temp["password"] == password){
+      let rule = temp["rule"];
+      console.log(key)
+      if (rule == "admin"){
+        isNotUser =  false
+      }
+    }
+  }
+  if (isNotUser)
+  {
+    return 
+  }
+
+  let i = 0;
+  let jsonAdminUsers = {}
+  let nestedJson = {}
+  for (let key in users)
+  {
+    let rule = temp["rule"];
+    nestedJson["rule"] = rule;
+    nestedJson["password"] = temp["password"]
+    nestedJson["username"] = key
+    jsonAdminUsers[i.toString()] = nestedJson;
+    nestedJson = {}
+    ++i;
+  }
+  res.json(JSON.stringify(jsonAdminUsers));
+  console.log(JSON.stringify(jsonAdminUsers))
+})
+
 router.get('logout', (req, res) => {
   path.join(dirPublic + '/index.html')
 })
