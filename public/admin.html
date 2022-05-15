@@ -159,46 +159,25 @@ async function readyFn() {
   //console.log(json)
   let usersDOM = document.getElementById("users");
   let i = 0;
-  let objList = []
+  let namesList = []
   let index = 0;
   var obj = JSON.parse(json, function (key, value) {
-    console.log(key);
-    let jsonList
-    if (index == 0)
-    {
-      jsonList = {}
-    }
-    ++index;
-    if (key == "rule")
-    {
-      jsonList["0"] = value;
-    }
-    if (key == "password")
-    {
-      jsonList["1"] = value;
-    }
-    if (key == "username")
-    {
-      jsonList["1"] = value;
-    }
-    
-    if (index == 4)
-    {
-      index = 0;
-      objList[i] = jsonList;
-      ++i;
-    }
+   if (key == "username")
+   {
+     namesList[i] = value;
+     ++i;
+   }
    
   });
-  console.log(objList)
+
   for (let j = 0; j < i - 1; ++j)
   {
     let li = document.createElement("li");
     
-    li.setAttribute('id', objList[j]["1"]);
-    li.appendChild(document.createTextNode("Name: " + objList[j]["1"]));
-    li.appendChild(document.createTextNode("Password: " + objList[j]["2"]));
-    li.appendChild(document.createTextNode("Rule: " + objList[j]["0"]));
+    li.setAttribute('id', namesList[j]);
+    li.appendChild(document.createTextNode("Name: " + namesList[j]));
+    //li.appendChild(document.createTextNode("Password: " + objList[j]["2"]));
+    //li.appendChild(document.createTextNode("Rule: " + objList[j]["0"]));
     usersDOM.appendChild(li);
   }
  
