@@ -24,7 +24,6 @@ router.get('/login/:user/:password', (req,res) => {
       let rule = temp["rule"];
       if (rule == "admin"){
         res.sendFile(path.join(dirPublic + "/admin.html"));
-        
       }
       else if (rule == "employee"){
         res.sendFile(path.join(dirPublic + "/employee.html"));
@@ -53,7 +52,7 @@ router.get('/users/:username/:password', (req,res) => {
     temp = users[key]
     if (key == username && temp["password"] == password){
       let rule = temp["rule"];
-      console.log(key)
+      //console.log(key)
       if (rule == "admin"){
         isNotUser =  false
       }
@@ -66,20 +65,48 @@ router.get('/users/:username/:password', (req,res) => {
 
   let i = 0;
   let jsonAdminUsers = {}
-  let nestedJson = {}
+  
   for (let key in users)
   {
-    let rule = temp["rule"];
+    let nestedJson = {}
+    let rule = users[key]["rule"];
     nestedJson["rule"] = rule;
-    nestedJson["password"] = temp["password"]
+    nestedJson["password"] = users[key]["password"]
     nestedJson["username"] = key
     jsonAdminUsers[i.toString()] = nestedJson;
-    nestedJson = {}
     ++i;
   }
   res.json(JSON.stringify(jsonAdminUsers));
-  console.log(JSON.stringify(jsonAdminUsers))
+  //console.log(JSON.stringify(jsonAdminUsers))
 })
+
+
+
+router.get('/users/:username/:password', (req,res) => {
+  let isNotUser = true
+  let temp = {}
+  let password = req.params.password;
+  let username = req.params.username;
+ 
+  for (let key in users)
+  {
+    temp = users[key]
+    if (key == username && temp["password"] == password){
+      let rule = temp["rule"];
+      //console.log(key)
+      if (rule == "admin"){
+        isNotUser =  false
+      }
+    }
+  }
+  if (isNotUser)
+  {
+    return 
+  }
+
+  
+})
+
 
 router.get('logout', (req, res) => {
   path.join(dirPublic + '/index.html')

@@ -103,8 +103,23 @@
   <!-- a form to put a user 
   a form to remove user-->
   <div id="users">
-
   </div>
+  <div id="addUser">
+  
+      <h1>Add a user</h1>
+      <label for="username" >Username</label>
+      <input type="text" id="username"><br>
+      <label for="password" >Password</label>
+      <input type="password" id="password"><br>
+      <label for="rule" >Rule</label>
+      <input type="text" id="rule">
+      <br>
+      <input type="button" value="Add user" onclick="addUser()">
+    </form>
+  </div>
+  <br>
+  <br>
+  <br>
 </div>
 
 
@@ -117,8 +132,7 @@
   <div class="w3-padding-32">
     <h4><b>Flowers are Just Love</b></h4>
     <h6><i>With Passion For Real, High Quality and Rare Flowers</i></h6>
-    <p>Just the biggest company of flowers with an impressive collection of flowers available for all of you, spreading love and happiness</p>
-    <p>Harav Norok 9, Rishon Lezion. Tel: 03-6002-7187</p>
+   
   </div>
 </div>
 
@@ -161,13 +175,26 @@ async function readyFn() {
   let i = 0;
   let namesList = []
   let index = 0;
+  let rulesList = []
+  let ruleIndex = 0;
+  let passwordsList = []
+  let passwordsIndex = 0
   var obj = JSON.parse(json, function (key, value) {
    if (key == "username")
    {
      namesList[i] = value;
      ++i;
    }
-   
+   if (key == "rule")
+   {
+    rulesList[ruleIndex] = value;
+     ++ruleIndex;
+   }
+   if (key == "password")
+   {
+    passwordsList[passwordsIndex] = value;
+    ++passwordsIndex;
+   }
   });
 
   for (let j = 0; j < i - 1; ++j)
@@ -175,15 +202,30 @@ async function readyFn() {
     let li = document.createElement("li");
     
     li.setAttribute('id', namesList[j]);
-    li.appendChild(document.createTextNode("Name: " + namesList[j]));
-    //li.appendChild(document.createTextNode("Password: " + objList[j]["2"]));
-    //li.appendChild(document.createTextNode("Rule: " + objList[j]["0"]));
+    li.appendChild(document.createTextNode("Name: " + namesList[j] + "  "));
+    li.appendChild(document.createTextNode("Password: " + passwordsList[j] + "  "));
+    li.appendChild(document.createTextNode("Rule: " + rulesList[j] + "  "));
     usersDOM.appendChild(li);
   }
- 
 };
 
 $( window ).on( "load", readyFn );
+
+
+function addUser()
+{
+  let username = document.getElementById("username")
+  let password = document.getElementById("password")
+  let rule = document.getElementById("rule")
+
+  if (username == null || password == null || rule == null)
+  {
+    return;
+  }
+
+  
+}
+
 </script>
 
 </body>
