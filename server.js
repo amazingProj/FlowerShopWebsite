@@ -54,7 +54,7 @@ router.get('/users/:username/:password', (req,res) => {
     if (key == username && temp["password"] == password){
       let rule = temp["rule"];
       //console.log(key)
-      if (rule == "admin"){
+      if (rule == "admin" || rule == "employee"){
         isNotUser =  false
       }
     }
@@ -69,6 +69,7 @@ router.get('/users/:username/:password', (req,res) => {
   
   for (let key in users)
   {
+    //console.log(key)
     let nestedJson = {}
     let rule = users[key]["rule"];
     nestedJson["rule"] = rule;
@@ -78,7 +79,7 @@ router.get('/users/:username/:password', (req,res) => {
     ++i;
   }
   res.json(JSON.stringify(jsonAdminUsers));
-  console.log(JSON.stringify(jsonAdminUsers))
+  //console.log(JSON.stringify(jsonAdminUsers))
 })
 
 
@@ -89,9 +90,62 @@ router.get('/addUser/:username/:password/:rule/:newPassword/:newUsername', (req,
   let password = req.params.password;
   let username = req.params.username;
   let rule = req.params.rule;
+  //console.log(password)
+  //console.log(username)
+  //console.log(rule)
+  let admin = false
+  for (let key in users)
+  {
+    temp = users[key]
+    if (key == username && temp["password"] == password){
+      let rule = temp["rule"];
+      if (rule == "admin"){
+        isNotUser =  false
+        admin = true
+      }
+      if (rule == "employee"){
+        isNotUser =  false
+      }
+    }
+  }
+  if (isNotUser)
+  {
+    return 
+  }
+  if (!admin)
+  {
+    if (rule == "admin")
+    {
+      return;
+    }
+  }
+  let newPassword  = req.params.newPassword;
+  let newUsername  = req.params.newUsername;
+  if (newPassword == null || newUsername == null || rule == null)
+  {
+    return;
+  }
+  if (!(rule == "admin" || rule == "employee" || rule == "customer" || rule == "Vendor"))
+  {
+    return;
+  }
+    let j = {}
+    j["rule"] = rule
+    j["password"] = newPassword
+    //console.log(j)
+    users[newUsername] = j
+    //console.log(users)
+    fs.writeFileSync("./users.json", JSON.stringify(users))
+})
+
+router.get('/removeUser/:username/:password/:Username', (req,res) => {
+  let isNotUser = true
+  let temp = {}
+  let password = req.params.password;
+  let username = req.params.username;
   console.log(password)
   console.log(username)
-  console.log(rule)
+  //console.log(rule)
   for (let key in users)
   {
     temp = users[key]
@@ -106,21 +160,11 @@ router.get('/addUser/:username/:password/:rule/:newPassword/:newUsername', (req,
   {
     return 
   }
-  let newPassword  = req.params.newPassword;
-  let newUsername  = req.params.newUsername;
-  if (newPassword == null || newUsername == null || rule == null)
-  {
-    return;
-  }
-    let j = {}
-    j["rule"] = rule
-    j["password"] = newPassword
-    console.log(j)
-    users[newUsername] = j
-    console.log(users)
-    fs.writeFileSync("./users.json", JSON.stringify(users))
+  let Username  = req.params.Username;
+  delete users[Username];
+  console.log("removed")
+  fs.writeFileSync("./users.json", JSON.stringify(users))
 })
-
 
 router.get('logout', (req, res) => {
   path.join(dirPublic + '/index.html')

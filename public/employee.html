@@ -25,6 +25,7 @@
   <a href="javascript:void(0)" onclick="w3_close()"
   class="w3-bar-item w3-button">Close Menu</a>
   <a href="#Catalog" onclick="w3_close()" class="w3-bar-item w3-button">Catalog</a>
+  <a href="#ManageUsers" onclick="w3_close()" class="w3-bar-item w3-button">Manage users</a>
   <a href="#About" onclick="w3_close()" class="w3-bar-item w3-button">About</a>
   <a href="#MakeContact" onclick="w3_close()" class="w3-bar-item w3-button">Make Contact</a>
 </nav>
@@ -95,7 +96,33 @@
     </div>
   </div>
 
-  
+  <hr id="ManageUsers">
+  <br />
+  <div id="users" class="w3-container w3-padding-32 w3-center">
+    <h3>Manage your users</h3><br>
+    <!-- a form to put a user 
+    a form to remove user-->
+    <div id="users">
+    </div>
+    <div id="addUser">
+      <form>
+          <h1>Add a user</h1>
+          <label for="username" >Username</label>
+          <input type="text" id="username"><br>
+          <label for="password" >Password</label>
+          <input type="password" id="password"><br>
+          <label for="rule" >Rule</label>
+          <input type="text" id="rule">
+          <br>
+          <input type="button" value="Add user" onclick="addUser()">
+          <p>Please refresh if the new user does not appear in list</p>
+        </form>
+    </div>
+    <br>
+    <br>
+    <br>
+  </div>
+
 <hr id="About">
 <br>
 <!-- About Section -->
@@ -158,6 +185,85 @@ function w3_close() {
 
 function logout() {
   location.replace('/index.html')
+}
+
+async function readyFn() {
+  console.log("window loaded")
+  let string = window.location.href.replace("login", "users")
+  string = string.split('#')[0]
+  let response = await fetch(string).then(
+    (response) => {
+      return response.json()
+  })
+
+  let json = await response;
+  //console.log(json)
+  let usersDOM = document.getElementById("users");
+  let i = 0;
+  let namesList = []
+  let index = 0;
+  let rulesList = []
+  let ruleIndex = 0;
+  let passwordsList = []
+  let passwordsIndex = 0
+  var obj = JSON.parse(json, function (key, value) {
+   if (key == "username")
+   {
+     namesList[i] = value;
+     ++i;
+   }
+   if (key == "rule")
+   {
+    rulesList[ruleIndex] = value;
+     ++ruleIndex;
+   }
+   if (key == "password")
+   {
+    passwordsList[passwordsIndex] = value;
+    ++passwordsIndex;
+   }
+  });
+
+  for (let j = 0; j < i - 1; ++j)
+  {
+    let li = document.createElement("li");
+    
+    li.setAttribute('id', namesList[j]);
+    li.appendChild(document.createTextNode("Name: " + namesList[j] + "  "));
+    li.appendChild(document.createTextNode("Password: " + passwordsList[j] + "  "));
+    li.appendChild(document.createTextNode("Rule: " + rulesList[j] + "  "));
+    usersDOM.appendChild(li);
+  }
+};
+
+$( window ).on( "load", readyFn );
+
+
+async function addUser()
+{
+  let username = document.getElementById("username").value
+  let password = document.getElementById("password").value
+  let rule = document.getElementById("rule").value
+
+  
+  if (username == null || password == null || rule == null)
+  {
+    return;
+  }
+  console.log("hii")
+  let string = window.location.href.replace("login", "addUser")
+  string = string.split('#')[0]
+  string += "/" + rule
+  string += "/" + password
+  string += "/" + username
+
+  console.log(string)
+  let response = await fetch(string).then(
+    (response) => {
+      return response.json()
+  })
+  let json = await response;
+  await readyFn();
 }
 </script>
 
