@@ -8,6 +8,7 @@ const dirImages = __dirname + '/images';
 const users = require('./users.json')
 router.use(express.static(dirPublic));
 app.use('/images', express.static('images'));
+const fs = require("fs");
 
 
 router.get('/',function(req,res){
@@ -77,23 +78,25 @@ router.get('/users/:username/:password', (req,res) => {
     ++i;
   }
   res.json(JSON.stringify(jsonAdminUsers));
-  //console.log(JSON.stringify(jsonAdminUsers))
+  console.log(JSON.stringify(jsonAdminUsers))
 })
 
 
 
-router.get('/users/:username/:password', (req,res) => {
+router.get('/addUser/:username/:password/:rule/:newPassword/:newUsername', (req,res) => {
   let isNotUser = true
   let temp = {}
   let password = req.params.password;
   let username = req.params.username;
- 
+  let rule = req.params.rule;
+  console.log(password)
+  console.log(username)
+  console.log(rule)
   for (let key in users)
   {
     temp = users[key]
     if (key == username && temp["password"] == password){
       let rule = temp["rule"];
-      //console.log(key)
       if (rule == "admin"){
         isNotUser =  false
       }
@@ -103,8 +106,19 @@ router.get('/users/:username/:password', (req,res) => {
   {
     return 
   }
-
-  
+  let newPassword  = req.params.newPassword;
+  let newUsername  = req.params.newUsername;
+  if (newPassword == null || newUsername == null || rule == null)
+  {
+    return;
+  }
+    let j = {}
+    j["rule"] = rule
+    j["password"] = newPassword
+    console.log(j)
+    users[newUsername] = j
+    console.log(users)
+    fs.writeFileSync("./users.json", JSON.stringify(users))
 })
 
 

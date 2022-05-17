@@ -212,18 +212,29 @@ async function readyFn() {
 $( window ).on( "load", readyFn );
 
 
-function addUser()
+async function addUser()
 {
-  let username = document.getElementById("username")
-  let password = document.getElementById("password")
-  let rule = document.getElementById("rule")
+  let username = document.getElementById("username").value
+  let password = document.getElementById("password").value
+  let rule = document.getElementById("rule").value
 
+  
   if (username == null || password == null || rule == null)
   {
     return;
   }
+  console.log("hii")
+  let string = window.location.href.replace("login", "addUser") 
+  string += "/" + rule
+  string += "/" + password
+  string += "/" + username
 
-  
+  let response = await fetch(string).then(
+    (response) => {
+      return response.json()
+  })
+  let json = await response;
+  await readyFn();
 }
 
 </script>
