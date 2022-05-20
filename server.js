@@ -3,16 +3,16 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const router = express.Router();
-const dirPublic = __dirname + '/public';
+const dirViews = __dirname + '/views';
 const dirImages = __dirname + '/images';
 const users = require('./users.json')
-router.use(express.static(dirPublic));
+
 app.use('/images', express.static('images'));
 const fs = require("fs");
 
 
 router.get('/',function(req,res){
-  res.sendFile(path.join(dirPublic + '/index.html'));
+  res.sendFile(path.join(dirViews + '/index.html'));
 });
 
 router.get('/login/:user/:password', (req,res) => {
@@ -24,16 +24,16 @@ router.get('/login/:user/:password', (req,res) => {
     if (key == username && temp["password"] == password){
       let rule = temp["rule"];
       if (rule == "admin"){
-        res.sendFile(path.join(dirPublic + "/admin.html"));
+        res.sendFile(path.join(dirViews + "/admin.html"));
       }
       else if (rule == "employee"){
-        res.sendFile(path.join(dirPublic + "/employee.html"));
+        res.sendFile(path.join(dirViews + "/employee.html"));
       }
       else if (rule == "customer"){
-        res.sendFile(path.join(dirPublic + "/customer.html"));
+        res.sendFile(path.join(dirViews + "/customer.html"));
       }
       else if (rule == "Vendor"){
-        res.sendFile(path.join(dirPublic + "/vendor.html"));
+        res.sendFile(path.join(dirViews + "/vendor.html"));
       }
       return;
     }
@@ -167,7 +167,7 @@ router.get('/removeUser/:username/:password/:Username', (req,res) => {
 })
 
 router.get('logout', (req, res) => {
-  path.join(dirPublic + '/index.html')
+  path.join(dirViews + '/index.html')
 })
 
 //add the router
